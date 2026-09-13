@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="514" viewBox="0 0 700 514" font-family="Segoe UI,Helvetica,Arial,sans-serif">
+<rect width="700" height="514" fill="#ffffff"/>
+<text x="16" y="26" font-size="15" font-weight="600" fill="#1a1a1a">Figure 3 — what survived the acceptance criterion</text>
+<text x="16" y="44" font-size="11" fill="#6b6b6b">effect in percentage points of win rate, with 95% interval</text>
+<line x1="496.7" y1="60" x2="496.7" y2="474" stroke="#1a1a1a" stroke-dasharray="3 3"/>
+<text x="300.0" y="492" font-size="10" fill="#6b6b6b" text-anchor="middle">-4</text>
+<text x="349.2" y="492" font-size="10" fill="#6b6b6b" text-anchor="middle">-3</text>
+<text x="398.3" y="492" font-size="10" fill="#6b6b6b" text-anchor="middle">-2</text>
+<text x="447.5" y="492" font-size="10" fill="#6b6b6b" text-anchor="middle">-1</text>
+<text x="496.7" y="492" font-size="10" fill="#6b6b6b" text-anchor="middle">+0</text>
+<text x="545.8" y="492" font-size="10" fill="#6b6b6b" text-anchor="middle">+1</text>
+<text x="595.0" y="492" font-size="10" fill="#6b6b6b" text-anchor="middle">+2</text>
+<text x="644.2" y="492" font-size="10" fill="#6b6b6b" text-anchor="middle">+3</text>
+<text x="288" y="82" font-size="11.5" fill="#1a1a1a" text-anchor="end">Tera Orb 2 -> 4  (adopted)</text>
+<line x1="584.7" y1="78" x2="628.9" y2="78" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="584.7" y1="73" x2="584.7" y2="83" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="628.9" y1="73" x2="628.9" y2="83" stroke="#1a7f4b" stroke-width="2"/>
+<circle cx="606.8" cy="78" r="4.5" fill="#1a7f4b"/>
+<text x="288" y="112" font-size="11.5" fill="#1a1a1a" text-anchor="end">Night Stretcher 3 -> 1  (adopted)</text>
+<line x1="510.9" y1="108" x2="589.6" y2="108" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="510.9" y1="103" x2="510.9" y2="113" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="589.6" y1="103" x2="589.6" y2="113" stroke="#1a7f4b" stroke-width="2"/>
+<circle cx="550.3" cy="108" r="4.5" fill="#1a7f4b"/>
+<text x="288" y="142" font-size="11.5" fill="#1a1a1a" text-anchor="end">Lively Stadium  (adopted)</text>
+<line x1="499.6" y1="138" x2="596.0" y2="138" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="499.6" y1="133" x2="499.6" y2="143" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="596.0" y1="133" x2="596.0" y2="143" stroke="#1a7f4b" stroke-width="2"/>
+<circle cx="547.8" cy="138" r="4.5" fill="#1a7f4b"/>
+<text x="288" y="172" font-size="11.5" fill="#1a1a1a" text-anchor="end">attack priority  (adopted)</text>
+<line x1="507.0" y1="168" x2="587.6" y2="168" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="507.0" y1="163" x2="507.0" y2="173" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="587.6" y1="163" x2="587.6" y2="173" stroke="#1a7f4b" stroke-width="2"/>
+<circle cx="547.3" cy="168" r="4.5" fill="#1a7f4b"/>
+<text x="288" y="202" font-size="11.5" fill="#1a1a1a" text-anchor="end">bench energy worth less  (adopted)</text>
+<line x1="512.9" y1="198" x2="567.0" y2="198" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="512.9" y1="193" x2="512.9" y2="203" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="567.0" y1="193" x2="567.0" y2="203" stroke="#1a7f4b" stroke-width="2"/>
+<circle cx="539.9" cy="198" r="4.5" fill="#1a7f4b"/>
+<text x="288" y="232" font-size="11.5" fill="#1a1a1a" text-anchor="end">HP no longer pays for rotation  (adopted)</text>
+<line x1="501.1" y1="228" x2="550.3" y2="228" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="501.1" y1="223" x2="501.1" y2="233" stroke="#1a7f4b" stroke-width="2"/>
+<line x1="550.3" y1="223" x2="550.3" y2="233" stroke="#1a7f4b" stroke-width="2"/>
+<circle cx="525.7" cy="228" r="4.5" fill="#1a7f4b"/>
+<text x="288" y="262" font-size="11.5" fill="#1a1a1a" text-anchor="end">Hero's Cape  (adopted AGAINST the criterion)</text>
+<line x1="475.0" y1="258" x2="537.0" y2="258" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="475.0" y1="253" x2="475.0" y2="263" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="537.0" y1="253" x2="537.0" y2="263" stroke="#4a4a4a" stroke-width="2"/>
+<circle cx="506.0" cy="258" r="4.5" fill="#4a4a4a"/>
+<text x="288" y="292" font-size="11.5" fill="#1a1a1a" text-anchor="end">how much bench energy is discounted</text>
+<line x1="478.5" y1="288" x2="533.5" y2="288" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="478.5" y1="283" x2="478.5" y2="293" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="533.5" y1="283" x2="533.5" y2="293" stroke="#4a4a4a" stroke-width="2"/>
+<circle cx="506.0" cy="288" r="4.5" fill="#4a4a4a"/>
+<text x="288" y="322" font-size="11.5" fill="#1a1a1a" text-anchor="end">attaching energy above playing a card</text>
+<line x1="469.1" y1="318" x2="533.0" y2="318" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="469.1" y1="313" x2="469.1" y2="323" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="533.0" y1="313" x2="533.0" y2="323" stroke="#4a4a4a" stroke-width="2"/>
+<circle cx="501.1" cy="318" r="4.5" fill="#4a4a4a"/>
+<text x="288" y="352" font-size="11.5" fill="#1a1a1a" text-anchor="end">Boss's Orders rule</text>
+<line x1="416.0" y1="348" x2="586.6" y2="348" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="416.0" y1="343" x2="416.0" y2="353" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="586.6" y1="343" x2="586.6" y2="353" stroke="#4a4a4a" stroke-width="2"/>
+<circle cx="501.1" cy="348" r="4.5" fill="#4a4a4a"/>
+<text x="288" y="382" font-size="11.5" fill="#1a1a1a" text-anchor="end">card identity in the model</text>
+<line x1="410.1" y1="378" x2="548.8" y2="378" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="410.1" y1="373" x2="410.1" y2="383" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="548.8" y1="373" x2="548.8" y2="383" stroke="#4a4a4a" stroke-width="2"/>
+<circle cx="479.5" cy="378" r="4.5" fill="#4a4a4a"/>
+<text x="288" y="412" font-size="11.5" fill="#1a1a1a" text-anchor="end">non-linearity in the model</text>
+<line x1="406.7" y1="408" x2="547.3" y2="408" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="406.7" y1="403" x2="406.7" y2="413" stroke="#4a4a4a" stroke-width="2"/>
+<line x1="547.3" y1="403" x2="547.3" y2="413" stroke="#4a4a4a" stroke-width="2"/>
+<circle cx="477.0" cy="408" r="4.5" fill="#4a4a4a"/>
+<text x="288" y="442" font-size="11.5" fill="#1a1a1a" text-anchor="end">adopting the field consensus (Judge)</text>
+<line x1="327.0" y1="438" x2="434.7" y2="438" stroke="#a4262c" stroke-width="2"/>
+<line x1="327.0" y1="433" x2="327.0" y2="443" stroke="#a4262c" stroke-width="2"/>
+<line x1="434.7" y1="433" x2="434.7" y2="443" stroke="#a4262c" stroke-width="2"/>
+<circle cx="380.6" cy="438" r="4.5" fill="#a4262c"/>
+<text x="16" y="508" font-size="10" fill="#6b6b6b">off scale: 2 ply -4.9 | rewarding damage -7.4 and -11.5</text>
+</svg>

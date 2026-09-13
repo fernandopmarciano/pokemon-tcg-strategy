@@ -1,0 +1,3 @@
+# Only what the readable scripts need. The competition engine (cg) is the
+# organizers' and is not redistributable — see README, "What is not here".
+pytest>=8.0
