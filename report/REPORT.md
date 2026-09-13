@@ -193,7 +193,7 @@ evaluation function are this card's game plan, which is precisely why the
 policy is worth 7.5 points on a list that plays the card and 0.7 on one that
 does not. The remaining cards serve that plan: twenty-four energy, four Tera
 Orb and four Bug Catching Set to find the attacker, two Lively Stadium, and one
-Hero's Cape (Figure 4).
+Hero's Cape (Figure 5).
 
 Utilisation was measured in play rather than assumed, and every correction it
 suggested was put to the same criterion. Teal Dance fires on 90.6% of turns.
