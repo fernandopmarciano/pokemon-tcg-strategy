@@ -193,7 +193,7 @@ evaluation function are this card's game plan, which is precisely why the
 policy is worth 7.5 points on a list that plays the card and 0.7 on one that
 does not. The remaining cards serve that plan: twenty-four energy, four Tera
 Orb and four Bug Catching Set to find the attacker, two Lively Stadium, and one
-Hero's Cape (Figure 5).
+Hero's Cape (Figures 4 and 5).
 
 Utilisation was measured in play rather than assumed, and every correction it
 suggested was put to the same criterion. Teal Dance fires on 90.6% of turns.
@@ -208,6 +208,9 @@ hypothesis registered first, two approved and two rejected. Adopting four
 Judge, which 15 of 18 strong lists run, would cost 2.36 percentage points;
 cutting Night Stretcher from three copies to one gained 1.09. Consensus is
 right about half the time, and only measurement says which half.
+
+> **Figure 4.** The sixty cards by function: one attacker; the rest is search,
+> energy and recovery.
 
 > **Figure 5.** The decklist, card by card: one attacker; the rest searches,
 > accelerates energy and recovers.
