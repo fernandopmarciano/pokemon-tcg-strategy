@@ -209,8 +209,8 @@ Judge, which 15 of 18 strong lists run, would cost 2.36 percentage points;
 cutting Night Stretcher from three copies to one gained 1.09. Consensus is
 right about half the time, and only measurement says which half.
 
-> **Figure 4.** The sixty cards by function: one attacker; the rest is search,
-> energy and recovery.
+> **Figure 4.** The decklist, card by card: one attacker; the rest searches,
+> accelerates energy and recovers.
 
 ### 4.5 Robustness to opening state and matchup
 
