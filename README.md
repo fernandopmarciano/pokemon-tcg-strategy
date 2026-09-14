@@ -1,193 +1,200 @@
 # Deck–Policy Coupling in a Pokémon TCG Agent
 
-Supporting material for the **Pokémon TCG AI Battle Challenge — Strategy
-track**. Everything a judge needs to understand and verify the submission, and
-nothing else.
+Supporting material for the Pokémon TCG AI Battle Challenge, Strategy track.
 
-```
-The finding, in one line:
+A win rate is customarily reported as a measure of the agent that produced it.
+The work collected here shows that in the Pokémon Trading Card Game the
+attribution does not hold, and offers a procedure that separates the two
+factors actually responsible: the sixty-card list, and the decision policy that
+drives it. Four independent measurements support the claim, and a control
+measurement determines how it should be read.
 
-  a win rate is not a property of the agent — it is a property of the
-  deck–policy PAIR, and the same policy is worth +7.5 points on the list
-  it was built for and +0.7 on another
-
-The honest result:
-
-  ladder rating 304.4, rank 6,123 of 6,807 (median 618)
-  the same 60 cards in other people's hands average 1,004
-```
-
-That second block is not a footnote. The agent is weak on the ladder, the
-report says so in its own Limitations section, and the contribution offered
-here is the measurement procedure that explains *why* a number like 304.4
-cannot be attributed to the agent alone.
+The submission itself is [`report/REPORT.md`](report/REPORT.md). Everything
+else in this repository exists to let a reader verify it rather than accept it.
 
 ---
 
-## Start here
-
-| you want to | open |
-|---|---|
-| **read the submission** | [`report/REPORT.md`](report/REPORT.md) — 1,997 words |
-| see the figures | [`report/figures/`](report/figures) — PNG and SVG |
-| read the agent | [`agent/main.py`](agent/main.py) — single file, no imports beyond the engine |
-| see the deck | [`agent/deck.csv`](agent/deck.csv) — 60 card IDs |
-| check a number | [`measurement/`](measurement) — the script behind each claim |
-| check the discipline | [`experiments/`](experiments) — hypotheses registered **before** each run |
-
----
-
-## The finding
+## How the finding was reached
 
 The project began as an attempt to build a strong agent and became an attempt
-to measure one. Four independent measurements produced the same conclusion.
+to measure one, and the turn happened by accident.
 
-| measurement | what changed | result |
-|---|---|---|
-| **1** | the *opponent's* deck, its policy fixed | we won **53.9% → 16.7%** |
-| **2** | *our* deck, our policy fixed | **51.7% → 35.8%** |
-| **3** | our policy driving the field's dominant list | worth **+0.7 pp** |
-| **4** | our policy driving a list that plays our attacker | worth **+7.5 pp** |
+While benchmarking against the strongest public agent that could be obtained,
+an anomaly appeared that should not have been possible: granting that opponent
+ten times more thinking time consistently *improved* our own win rate. Search
+that looks further ahead only degrades play when the function being optimised
+is misaligned with the position on the table, which pointed at the opponent's
+evaluation rather than at ours. Inspection confirmed it. Its heuristics
+reference six cards by numeric identifier, and the benchmark had been running
+it on a deck it was never written for. Restoring its own list, and changing
+nothing about its policy, moved our result from 53.9% to 16.7%.
 
-And the control that decided the reading: with **no policy on either side**,
-our list still wins **89.2%** of that matchup. Most of the gap exists before
-any agent plays a card.
+Thirty-seven percentage points had been attributed to an agent and belonged to
+the cards. That raised the obvious question about our own numbers, and the rest
+of the project is the attempt to answer it honestly: fix one factor, vary the
+other, and see how much of a win rate survives.
 
-The practical consequence, and the reason this matters beyond one competition:
-**evaluating a deck requires declaring the policy that drives it**, and deck
-choice comes *after* policy choice. A deck score measured under one policy does
-not transfer to another.
+It does not survive well. Our own agent, policy untouched, falls from 51.7% to
+35.8% when handed a different list. The same policy is worth 7.5 percentage
+points over a null baseline on a list that plays the card its evaluation
+function was designed around, and 0.7 on a list that does not. And the control
+that settles the matter: with no policy on either side at all, our list still
+wins 89.2% of the matchup where the policy appeared most valuable. Most of the
+outcome is decided before either agent plays a card.
+
+The practical consequence reaches past this competition. A deck evaluated under
+one policy tells you nothing about that deck under another, so deck selection
+belongs downstream of policy selection, never before it.
+
+---
+
+## What is here, and why each part earns its place
+
+**[`report/`](report)** holds the submission and the five figures that carry
+its quantitative claims. The figures are generated from the same sources as the
+tables, never transcribed by hand, because transcription introduced a wrong
+number once and the project stopped trusting it.
+
+**[`agent/`](agent)** holds the agent as submitted and the sixty cards it
+plays. The agent is a single file by requirement of the competition packaging,
+and that constraint shaped the model: a tree model that outperformed the linear
+one at imitation does not fit inside it. The deck is included because, given
+the finding above, publishing a policy without the list it was measured on
+would reproduce exactly the error this work describes.
+
+**[`measurement/`](measurement)** holds the scripts that produced the numbers.
+Every quantitative claim in the report traces to one of them, and the index in
+that directory names which script backs which claim. They are here to be read
+as much as run: the replicate handling, the interval arithmetic and the
+controls are all visible in the source.
+
+**[`experiments/`](experiments)** holds sixteen pre-registrations. Each states
+a hypothesis, the values to be tested, a numeric prediction and the table of
+outcomes that would falsify it, all written before the run; the measured result
+was appended afterwards without editing anything above it. Six of these changes
+passed and were adopted, one was adopted against the criterion by declared
+decision, and the rest failed. They are published in full, failures included,
+because a pre-registration that is only shown when it succeeds is not evidence
+of anything.
+
+**[`tests/`](tests)** holds the invariants that protect the published
+artefacts: that a figure never renders blank, that the deck under measurement
+is the deck that ships, that a silently broken model degrades loudly instead of
+quietly. Each exists because the corresponding failure happened.
 
 ---
 
 ## The agent
 
-A three-layer fallback cascade with a guaranteed exit at every layer, because
-the engine scores a timeout as a loss.
+The agent decides in three layers, each with a guaranteed exit, because the
+engine scores a timeout as a loss.
 
-1. **One-turn search.** For every legal action the engine's forward model is
-   called through to end of turn; hidden cards are filled once per decision
-   (determinization), with the opponent's list sampled by its measured share of
-   the field. Results are ranked by the evaluation function.
-2. **Heuristic ordering** by action type, when the time budget runs out.
-3. **First legal action**, on any exception.
+The principal layer searches one turn deep. For every legal action, the
+engine's forward model is called through to the end of the turn; hidden cards
+are resolved once per decision by determinization, with the opponent's list
+sampled according to its measured share of the competitive field. Candidate
+lines are ranked by an evaluation function. When the time budget is exhausted a
+heuristic layer orders actions by type instead, and any unhandled exception
+falls through to a layer that takes the first legal action.
 
-The evaluation function is hand-written terms (prizes, knockouts, energy,
-bench, accumulated damage) plus a **linear model** trained by imitation on
-**335,101 decisions from 723 ladder games**. Features are standardized
-(`z = (x − μ) / σ`) with mean and standard deviation embedded alongside the 50
-weights.
+Shallow search is a measured decision rather than a limitation accepted for
+convenience. Searching two turns cost 4.9 percentage points and beam search
+4.22. Under hidden information with a single determinization, error in the
+estimate of the future state accumulates faster than lookahead repays, so depth
+was spent on completing the current turn rather than on reaching the next.
 
-It is linear by constraint, not by preference: the submission must be a single
-file, and a tree model that beat it at imitation (+1.97 pp) does not fit.
+The evaluation function combines hand-written terms over prizes, knockouts,
+energy, bench and accumulated damage with a linear model trained by imitation
+on 335,101 decisions drawn from 723 ladder games. Features are standardised
+before the weighted sum, with the per-feature mean and standard deviation
+embedded alongside the fifty weights.
 
-> **Search depth is shallow because deeper measured worse**: two-turn search
-> cost −4.9 pp and beam search −4.22. With hidden information and one
-> determinization, state-estimate error grows faster than lookahead gain.
-
-See [`report/figures/Figure-1-decision-flow.png`](report/figures/Figure-1-decision-flow.png).
+The most consequential thing learned about that model is that it did not beat a
+one-line rule. Audited against a baseline that simply takes the first action
+the engine offers, it tied across three independent samples, because the
+heaviest of its fifty features turned out to be the position of the action in
+the engine's own list. Asking whether the model did anything at all, rather
+than how to improve it, is what produced the three largest adopted gains in the
+project.
 
 ---
 
 ## The deck
 
-Built on **4× Teal Mask Ogerpon ex** — a basic attacker whose damage scales
-without a ceiling with attached energy, untargetable on the bench (Tera), whose
-ability *Teal Dance* attaches a Grass Energy and draws.
+The list is built on four copies of Teal Mask Ogerpon ex: a basic attacker
+whose damage scales without a ceiling as energy accumulates, untargetable while
+on the bench because it is Tera, and whose ability attaches a Grass Energy and
+draws a card each turn.
 
-Concept and policy are the same object: the energy and damage terms of the
-evaluation function *are* this card's game plan. That is why the policy
+Concept and policy are the same object here, which is the local form of the
+general finding. The energy and damage terms of the evaluation function are a
+description of this card's game plan, and that is precisely why the policy
 transfers to a list that plays the card and not to one that does not.
 
-Utilisation was measured in play rather than assumed — and the corrections it
-suggested were tested and **rejected**, which is reported as such:
-
-| card | what the measurement found | verdict |
-|---|---|---|
-| Teal Dance | fires on **90.6%** of turns | — |
-| Jumbo Ice Cream | **58%** (±10.3, n=89) of uses on Pokémon knocked out the same turn | policy fix **−0.89 pp**, rejected |
-| Briar | played with **3.7 prizes** still to take | policy fix **−1.96 pp**, rejected |
-| Judge | 15 of 18 strong lists run 4 copies | adopting it **−2.36 pp**, rejected |
-
----
-
-## How the numbers were produced
-
-Every claim in the report has a script here that produces it.
-
-| claim in the report | script |
-|---|---|
-| win rate against the four reference opponents | [`measurement/painel.py`](measurement/painel.py) |
-| deck A vs deck B with paired replicates | [`measurement/comparar_decks.py`](measurement/comparar_decks.py) |
-| field composition and archetype shares | [`measurement/meta_atual.py`](measurement/meta_atual.py) |
-| card utilisation (90.6%, 58%, 3.7 prizes) | [`measurement/medir_uso_cartas.py`](measurement/medir_uso_cartas.py) |
-| consensus of strong lists (15 of 18, 14 of 14) | [`measurement/consenso_das_listas.py`](measurement/consenso_das_listas.py) |
-| confidence intervals and significance | [`measurement/estatistica.py`](measurement/estatistica.py) |
-| the four figures | [`measurement/figuras_writeup.py`](measurement/figuras_writeup.py) |
-| the linear model, training and export | [`measurement/treinar_prior.py`](measurement/treinar_prior.py), [`exportar_prior.py`](measurement/exportar_prior.py) |
-
-### The rules the project measured under
-
-- **Pre-registration.** Hypothesis, values to test, a numeric prediction and a
-  falsification table, written *before* the run. The result is appended without
-  editing anything above it. All of them are in [`experiments/`](experiments).
-- **A conjunctive acceptance criterion.** A change is adopted only if it raises
-  the aggregate win rate against four reference opponents with a 95% interval
-  above zero **and** regresses against none of them individually.
-- **Replicates, always.** The engine accepts no random seed: four runs with
-  identical decks and a deterministic agent produced 118 to 191 decisions in
-  different sequences. There is no paired game.
-- **A declared resolution.** Dispersion between runs is 1.39× the binomial
-  prediction, so intervals computed under independence are 39% too narrow. The
-  minimum detectable difference is **0.9 pp**, and effects below the bench's
-  own reproducibility are not declared as results.
-
-Of more than twenty hypotheses put to that criterion, **six passed**. A seventh
-was adopted against it, by declared decision, and is labelled as such
-everywhere it appears.
+Card usage was measured in play rather than assumed, and the corrections that
+measurement suggested were held to the same standard as any other proposal.
+Three of them failed and were not adopted. The healing card was being spent on
+Pokémon that were knocked out the same turn in 58% of its uses, and the closing
+card was being played with 3.7 prizes still on the board; policies correcting
+both were built, measured, and rejected at −0.89 and −1.96 percentage points.
+Diagnosing a misuse and repairing it profitably are different problems, and the
+criterion was applied to our own proposals without exception.
 
 ---
 
-## Reproducing
+## The discipline the numbers were produced under
 
-```bash
-python -m pip install -r requirements.txt
+The protocol is itself one of the results, because it was assembled from
+failures. Eleven early measurements yielded conclusions that later collapsed,
+five of them caught by numerical inconsistency rather than by code review, and
+each collapse contributed a rule that has been enforced since. The most
+instructive filtered an archetype by the label on its list rather than by the
+card of interest, over a sample that turned out to be 14% of the real
+population; a conclusion that had survived Bonferroni correction and two
+independent controls reversed sign once the denominator was fixed. No
+statistical control protects against a wrong denominator, and every instrument
+built afterwards ships with a control comparing the baseline against itself.
 
-# the figures in the report, both languages
-python measurement/figuras_writeup.py --idioma en --deck agent/deck.csv
+Four rules came out of that history. Nothing is adopted without a criterion
+declared before measurement, and the criterion is conjunctive: a change must
+raise the aggregate win rate against four reference opponents with a 95%
+interval above zero and must not reduce it against any of them individually.
+Every hypothesis is registered in advance with a numeric prediction and a
+falsification table. Every comparison uses replicates, because the engine
+accepts no random seed and no two games are paired. And the bench declares its
+own resolution: dispersion between runs of an identical binary is 1.39 times
+the binomial prediction, so effects below 0.9 percentage point are reported as
+undetermined rather than as gains.
 
-# deck composition
-python measurement/analisar_deck.py --deck agent/deck.csv
-
-# word count of the report, four conventions
-python measurement/contar_palavras.py report/REPORT.md
-
-# the tests that lock the published artefacts
-python -m pytest tests/ -q
-```
+Of more than twenty hypotheses put to that criterion, six passed.
 
 ---
 
-## What is **not** in this repository, and why
+## Scope of what is published
 
-- **The competition engine** (`cg`) is the organizers' and is not
-  redistributable. Scripts that drive matches — `painel.py`,
-  `arena_paralela.py`, `comparar_decks.py` — import it and will not run without
-  it. They are here to be **read**: the measurement logic, the replicate
-  handling and the interval arithmetic are all visible.
-- **Ladder episode data** used to train the imitation model, for the same
-  reason.
-- **The working repository**: 80+ analysis scripts, 19 test modules and 65
-  archived documents. Kept out on purpose — this repository is scoped to what a
-  judge needs to evaluate the submission.
-- **`experiments/` is in Portuguese.** These are the original pre-registrations
-  and were deliberately not rewritten: editing them after the fact would
-  destroy the only property that makes them evidence. Each file opens with the
-  hypothesis, the numeric prediction and the falsification table, and closes
-  with the measured result.
+The competition engine is the organisers' and is not redistributed here, nor
+are the ladder episodes used to train the imitation model. Scripts that drive
+matches therefore cannot execute from this repository alone, and are included
+for inspection of their method rather than for immediate reproduction. The
+figures, the deck analysis, the word count and the test suite run unaided.
+
+The working repository from which this material was drawn contains eighty
+analysis scripts and sixty-five archived documents. It is deliberately not
+mirrored here. This repository is scoped to what is necessary to evaluate the
+submission, and a reader should be able to reach any claim in the report within
+two clicks of this page.
+
+One editorial decision deserves stating plainly. The pre-registrations and the
+comments inside the source are in Portuguese, the language they were written
+in. They were not retranslated, because a pre-registration edited after its
+result is known stops being evidence, and rewriting dated documents would
+destroy the only property that makes them worth publishing. Each directory
+therefore carries an English index that reproduces the hypothesis, the
+registered prediction and the measured outcome, so that the evidentiary content
+is fully available in English while the originals remain untouched.
 
 ---
 
 ## License
 
-[MIT](LICENSE).
+Released under the [MIT License](LICENSE).
